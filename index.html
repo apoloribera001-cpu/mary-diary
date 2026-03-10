@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Para Mary ❤️</title>
+
+<style>
+
+body{
+margin:0;
+background:black;
+color:white;
+font-family:Georgia,serif;
+overflow:hidden;
+text-align:center;
+}
+
+/* GALÁXIA */
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* coração */
+
+#heart{
+font-size:80px;
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.2)}
+100%{transform:scale(1)}
+}
+
+/* estrela cadente */
+
+.shooting{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+box-shadow:0 0 10px white;
+animation:shoot 3s linear infinite;
+}
+
+@keyframes shoot{
+0%{
+transform:translate(-200px,-200px);
+opacity:1;
+}
+100%{
+transform:translate(800px,800px);
+opacity:0;
+}
+}
+
+/* caixa */
+
+.box{
+background:white;
+color:black;
+padding:40px;
+border-radius:15px;
+max-width:650px;
+margin:auto;
+margin-top:10vh;
+line-height:1.8;
+box-shadow:0 10px 40px rgba(0,0,0,0.6);
+animation:fade 1s;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* botão */
+
+button{
+margin-top:20px;
+padding:12px 25px;
+border:none;
+background:#ff4b6e;
+color:white;
+font-size:18px;
+border-radius:10px;
+cursor:pointer;
+}
+
+button:hover{
+background:#ff2f55;
+}
+
+/* URSO */
+
+#bear{
+position:fixed;
+bottom:0;
+left:-200px;
+font-size:60px;
+animation:walk 20s linear infinite;
+}
+
+@keyframes walk{
+0%{left:-200px}
+50%{left:50vw}
+100%{left:110vw}
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="galaxy"></canvas>
+
+<div id="bear">🐻</div>
+
+<div class="shooting"></div>
+
+<div id="intro" class="box">
+
+<div id="heart">❤️</div>
+
+<h2>Para Mary</h2>
+
+<button onclick="start()">Abrir</button>
+
+</div>
+
+
+<div id="senha" class="box" style="display:none">
+
+<h2>🔒 Diário privado</h2>
+
+<p>Digite a senha</p>
+
+<input type="password" id="pass">
+
+<br><br>
+
+<button onclick="enter()">Entrar</button>
+
+</div>
+
+
+<div id="p1" class="box" style="display:none">
+
+<p>
+
+Mary,
+
+Talvez você ache estranho abrir um site e encontrar um diário escrito para você.
+
+Desde quarta-feira passada eu venho pensando em como escrever isso.
+
+Apaguei frases, escrevi de novo… tentando encontrar as palavras certas.
+
+</p>
+
+<button onclick="next('p1','p2')">Virar página</button>
+
+</div>
+
+
+<div id="p2" class="box" style="display:none">
+
+<p>
+
+Desde que começamos a conversar algo começou a mudar dentro de mim.
+
+Primeiro foram conversas simples.
+
+Depois vieram as risadas.
+
+Depois aquela curiosidade de querer saber mais sobre você.
+
+</p>
+
+<button onclick="next('p2','p3')">Virar página</button>
+
+</div>
+
+
+<div id="p3" class="box" style="display:none">
+
+<p>
+
+Às vezes estou fazendo qualquer coisa…
+
+e de repente penso em você.
+
+Mesmo quando você demora para responder ou às vezes me ignora…
+
+eu sempre tento puxar assunto.
+
+</p>
+
+<button onclick="next('p3','p4')">Virar página</button>
+
+</div>
+
+
+<div id="p4" class="box" style="display:none">
+
+<p>
+
+Algumas pessoas entram na nossa vida de forma inesperada…
+
+e acabam se tornando especiais.
+
+E com você foi assim.
+
+</p>
+
+<button onclick="next('p4','p5')">Virar página</button>
+
+</div>
+
+
+<div id="p5" class="box" style="display:none">
+
+<h2>Eu tenho uma chance com você?</h2>
+
+<button onclick="yes()">Sim ✅</button>
+<button onclick="no()">Não ❌</button>
+
+<br><br>
+
+<iframe style="border-radius:12px"
+src="https://open.spotify.com/embed/track/5AnCLGg35ziFOloEnXK4uu"
+width="300"
+height="80"
+frameborder="0"
+allow="autoplay; clipboard-write; encrypted-media">
+</iframe>
+
+</div>
+
+
+<script>
+
+/* galaxia */
+
+const canvas=document.getElementById("galaxy")
+const ctx=canvas.getContext("2d")
+
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
+
+let stars=[]
+
+for(let i=0;i<200;i++){
+
+stars.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2
+})
+
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+ctx.fillStyle="white"
+
+stars.forEach(s=>{
+ctx.beginPath()
+ctx.arc(s.x,s.y,s.r,0,Math.PI*2)
+ctx.fill()
+})
+
+requestAnimationFrame(draw)
+
+}
+
+draw()
+
+/* funções */
+
+function start(){
+document.getElementById("intro").style.display="none"
+document.getElementById("senha").style.display="block"
+}
+
+function enter(){
+
+let senha=document.getElementById("pass").value
+
+if(senha==="Mary007"){
+
+document.getElementById("senha").style.display="none"
+document.getElementById("p1").style.display="block"
+
+}else{
+
+alert("Senha incorreta")
+
+}
+
+}
+
+function next(a,b){
+
+document.getElementById(a).style.display="none"
+document.getElementById(b).style.display="block"
+
+}
+
+function yes(){
+window.open("https://wa.me/351924488547?text=✅ Eu também sinto algo por você")
+}
+
+function no(){
+window.open("https://wa.me/351924488547?text=❌ Acho que não sinto o mesmo")
+}
+
+</script>
+
+</body>
+</html>
